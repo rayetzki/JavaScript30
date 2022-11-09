@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+    const p = document.querySelector('p');
+
+    function makeGreen() {
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('Hello');
+    // Interpolated
+    console.log('Hello I am %s', '#');
+    // Styled
+    console.log('%cI am text', 'font-size: 20px; text-shadow: 10px 10px 0 rgba(0 0 0 / .5)');
+    // warning!
+    console.warn('Oh no');
+    // Error :|
+    console.error('Something bad happened');
+    // Info
+    console.info('Notice this');
+    // Testing
+    console.assert(1 === 2, 'That is wrong');
+    // clearing
+    console.clear();
+    // Viewing DOM Elements
+    console.dir(p);
+    // Grouping together
+    console.clear();
+    dogs.forEach(dog => {
+      console.groupCollapsed(dog.name);
+      console.log(`This is: ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.groupEnd(dog.name);
+    });
+    // counting
+    console.count('Illia');
+    console.count('Illia');
+    console.count('Illia');
+    console.count('Illia');
+    console.count('Nick');
+    console.countReset('Illia');
+    // timing
+    console.time('Illia');
+    console.log('Illia is very cool');
+    console.timeStamp('Illia');
+    console.timeLog('Illia');
+    console.timeEnd('Illia');
+  </script>
+</body>
+</html>
