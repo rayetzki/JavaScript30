@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<button id="clear">Clear</button>
+<script>
+  const canvas = document.querySelector('#draw');
+  const clearButton = document.querySelector('#clear');
+  const ctx = canvas.getContext('2d');
+  [canvas.width, canvas.height] = [window.innerWidth, window.innerHeight];
+  ctx.strokeStyle = '#BADA55';
+  ctx.globalCompositeOperation = 'luminosity';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 50;
+
+  const state = { 
+    isDrawing: false,
+    lastX: 0,
+    lastY: 0,
+    hue: 0
+  };
+
+  function draw({ offsetX, offsetY }) {
+    if (!state.isDrawing) return;
+    
+    ctx.strokeStyle = `hsl(${state.hue}, 100%, 50%)`;
+    ctx.beginPath();
+    ctx.moveTo(state.lastX, state.lastY);
+    ctx.lineTo(offsetX, offsetY);
+    ctx.stroke();
+
+    [state.lastX, state.lastY] = [offsetX, offsetY];
+    state.hue = state.hue >= 360 ? 0 : state.hue + 0.5;
+  }
+
+  function clear() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    [state.lastX, state.lastY] = [0, 0];
+    state.hue = 0;
+    state.isDrawing = false;
+  }
+  
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', ({ offsetX, offsetY }) => {
+    state.isDrawing = true;
+    [state.lastX, state.lastY] = [offsetX, offsetY];
+  });
+  canvas.addEventListener('mouseup',  () => state.isDrawing = false);
+  canvas.addEventListener('mouseout',  () => state.isDrawing = false);
+  clearButton.addEventListener('click', clear);
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+
+  button {
+    border: 1px solid bisque;
+    background: none;
+    font-size: 2em;
+    position: absolute;
+    right: 0;
+    bottom: 24px;
+    border-radius: 50%;
+    padding: 1.5em;
+  }
+</style>
+
+</body>
+</html>
