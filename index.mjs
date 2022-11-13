@@ -1,6 +1,8 @@
 import { readdir, stat } from 'fs/promises';
+import { parse } from 'path'
 
-let count = 0;
+let all = 0;
+let finished = 0;
 
 try {
   const allFiles = await readdir('./');
@@ -10,11 +12,12 @@ try {
     if (stats.isDirectory()) {
       const files = await readdir(dir);
       const ready = files.filter(file => file.includes('FINISHED') || file.includes('START'));
-      if (ready.length === 0) count++;
+      if (ready.length === 0) finished++;
+      if (files.some(file =>parse(file).ext.includes('html') && parse(file).name.includes('index'))) all++;
     };
   }
 
-  console.info(`Challenges: ${count} out of ${allFiles.length} finished`);
+  console.info(`Challenges: ${finished} out of ${all} finished`);
 } catch (err) {
   console.error('Current directory could not be read');
 }
