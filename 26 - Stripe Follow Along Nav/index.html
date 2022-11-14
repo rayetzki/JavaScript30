@@ -220,6 +220,39 @@
 </style>
 
 <script>
+  const triggers = document.querySelectorAll('.cool > li');
+  const dropdownBg = document.querySelector('.dropdownBackground');
+  const nav = document.querySelector('.top');
+  
+  function showDropdown() {
+    this.classList.add('trigger-enter');
+    setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
+    dropdownBg.classList.add('open');
+
+    const dropdown = this.querySelector('.dropdown');
+    const navCoords = nav.getBoundingClientRect();
+    const dropdownCoords = dropdown.getBoundingClientRect();
+
+    const { top, left, width, height } = {
+      top: dropdownCoords.top - navCoords.top,
+      left: dropdownCoords.left - navCoords.left,
+      width: dropdownCoords.width,
+      height: dropdownCoords.height,
+    };
+    
+    dropdownBg.style.setProperty('height', `${height}px`);
+    dropdownBg.style.setProperty('width', `${width}px`);
+    dropdownBg.style.setProperty('transform', `translate(${left}px, ${top}px)`);
+  }
+
+  function hideDropdown() {
+    const dropdown = this.querySelector('.dropdown');
+    dropdownBg.classList.remove('open');
+    dropdown.parentNode.classList.remove('trigger-enter', 'trigger-enter-active');
+  }
+
+  triggers.forEach(trigger => trigger.addEventListener('mouseenter', showDropdown));
+  triggers.forEach(trigger => trigger.addEventListener('mouseleave', hideDropdown));
 </script>
 
 </body>
