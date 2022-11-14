@@ -6,14 +6,39 @@
 </head>
 <body>
 
-  <div class="words" contenteditable>
-  </div>
+  <div class="words" contenteditable></div>
 
-<script>
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  <script>
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; 
+    const recognition = new SpeechRecognition();
+    recognition.interimResults = true;
 
+    let p = document.createElement('p');
+    const words = document.querySelector('.words');
+    words.appendChild(p);
 
-</script>
+    recognition.addEventListener('result', ({ results }) => {
+      const transcript = Array.from(results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('');
+
+        p.textContent = transcript;
+        
+        if (!results[0].isFinal) return;
+        p = document.createElement('p');
+        words.appendChild(p);
+
+        if (transcript.includes('unicorn')) {
+          console.log('I love unicorns');
+        }
+    });
+
+    recognition.addEventListener('end', recognition.start);
+
+    recognition.start();
+
+  </script>
 
 
   <style>

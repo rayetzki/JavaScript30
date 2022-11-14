@@ -30,32 +30,27 @@ function redEffect(pixels) {
     pixels.data[i + 1] -= 50;
     pixels.data[i + 2] *= 0.5;
   }
+  
   return pixels;
 }
 
 function greenScreen(pixels) {
-  const inputs = [...document.querySelectorAll('.rgb input')].reduce((levels, input) => {
-    return {
-      ...levels,
-      [input.name]: input.value,
-    };
-  }, {});
+  const inputs = [...document.querySelectorAll('.rgb input')].reduce((levels, input) => ({
+    ...levels,
+    [input.name]: input.value,
+  }), {});
 
   for (i = 0; i < pixels.data.length; i += 4) {
     const [red, green, blue] = [pixels.data[i], pixels.data[i + 1], pixels.data[i + 2]];
 
-    if (red >= inputs.rmin
-        && green >= inputs.gmin
-        && blue >= inputs.bmin
-        && red <= inputs.rmax
-        && green <= inputs.gmax
-        && blue <= inputs.bmax
+    if (
+      red >= inputs.rmin && green >= inputs.gmin && blue >= inputs.bmin && 
+      red <= inputs.rmax && green <= inputs.gmax && blue <= inputs.bmax
     ) pixels.data[i + 3] = 0;
   }
 
   return pixels;
-
-} 
+}
 
 function rgbSplit(pixels) {
   for (let i = 0; i < pixels.data.length; i += 4) {
@@ -63,6 +58,7 @@ function rgbSplit(pixels) {
     pixels.data[i + 100] = pixels.data[i + 1];
     pixels.data[i - 150] = pixels.data[i + 2];
   }
+
   return pixels;
 }
 
